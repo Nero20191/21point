@@ -12,18 +12,19 @@ var Utils = require('Utils');
 @ccclass
 export default class Dealer extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    
 
     @property
     bestPoint= {
-        get: function () {
-            var cards = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
-            var minMax = Utils.getMinMaxPoint(cards);
-            return minMax.max;
-        },
-        override: true
+        
+        get value() : number {
+            let cards = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
+            let minMax = Utils.getMinMaxPoint(cards);
+            return minMax.max
+        }
     };
+    _super: any;
+    renderer: any;
 
 
     // onLoad () {}
@@ -42,15 +43,15 @@ export default class Dealer extends cc.Component {
         var Game = require('Game');
         var Types = require('Types');
  
-        var bestPoint = this.bestPoint;
+        let bestPoint = this.bestPoint;
  
         // 已经最大点数
-        if (bestPoint === 21) {
+        if (bestPoint.value=== 21) {
             return false;
         }
  
         // 不论抽到什么牌肯定不会爆，那就接着抽
-        if (bestPoint <= 21 - 10) {
+        if (bestPoint.value <= 21 - 10) {
             return true;
         }
  
@@ -64,8 +65,8 @@ export default class Dealer extends cc.Component {
                 return false;
         }
  
-        return this.bestPoint < 17;
-    },
+        return this.bestPoint.value < 17;
+    }
     // update (dt) {}
 }
 
