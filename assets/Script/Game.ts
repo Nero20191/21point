@@ -1,14 +1,7 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const {ccclass, property} = cc._decorator;
 var players = require('PlayerData').players;
-var Decks = require('Decks');
-var Types = require('Types');
+var Decks = require('Deck');
+var Types = require('Type');
 var ActorPlayingState = Types.ActorPlayingState;
 var Fsm = require('game-fsm');
 @ccclass
@@ -49,6 +42,11 @@ export default class Game extends cc.Component {
     }) 
     numberOfDecks=1;
     static instance: any;
+    player: any;
+    info: any;
+    totalChips: any;
+    decks: any;
+    fsm: any;
     
    
     
@@ -84,9 +82,7 @@ export default class Game extends cc.Component {
         this.audioMng.playMusic();
     }
 
-    start () {
-
-    }
+    
     
     addStake(delta: number):boolean{
         if (this.totalChipsNum < delta) {
@@ -124,7 +120,7 @@ export default class Game extends cc.Component {
             var anchor = this.playerAnchors[i];
             var switchSide = (i > 2);
             anchor.addChild(playerNode);
-            playerNode.position = cc.v2(0, 0);
+            playerNode.position = cc.v3(0, 0);
  
             var playerInfoPos = cc.find('anchorPlayerInfo', anchor).getPosition();
             var stakePos = cc.find('anchorStake', anchor).getPosition();
@@ -165,7 +161,7 @@ export default class Game extends cc.Component {
     }
  
     // 玩家停牌
-    stand: function () {
+    stand() {
         this.player.stand();
  
         this.audioMng.playButton();
@@ -175,32 +171,32 @@ export default class Game extends cc.Component {
     }
  
     //
-    deal: function () {
+    deal() {
         this.fsm.toDeal();
         this.audioMng.playButton();
     }
  
     //
-    start: function () {
+    start() {
         this.fsm.toBet();
         this.audioMng.playButton();
     }
  
     // 玩家报到
-    report: function () {
+    report() {
         this.player.report();
  
         // if every player end
         this.fsm.onPlayerActed();
     }
  
-    quitToMenu: function () {
+    quitToMenu() {
         cc.director.loadScene('menu');
     }
  
     // FSM CALLBACKS
  
-    onEnterDealState: function () {
+    onEnterDealState() {
         this.betUI.resetTossedChips();
         this.inGameUI.resetCountdown();
         this.player.renderer.showStakeChips(this.player.stakeNum);

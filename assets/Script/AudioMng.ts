@@ -69,7 +69,7 @@ export default class AudioMng extends cc.Component {
     playButton() {
         this._playSFX(this.buttonAudio);
     }
-    // update (dt) {}
+    
 }
 
  

@@ -6,21 +6,28 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
+import AudioMng from '../AudioMng';
 
+//AudioMng["playButton"](),
 @ccclass
 export default class ButtonScaler extends cc.Component {
 
     @property
-    pressedScale: 1;
+    pressedScale = 1;
 
     @property
-    transDuration: 0;
+    transDuration = 0;
+
+    initScale: number;
+    button: cc.Button;
+    scaleDownAction: cc.ActionInterval;
+    scaleUpAction: cc.ActionInterval;
 
     
 // use this for initialization.
      onLoad () {
         let self = this;
-        let audioMng = cc.find('Menu/AudioMng') || cc.find('Game/AudioMng')
+        var audioMng = cc.find('Menu/AudioMng') || cc.find('Game/AudioMng')
         if (audioMng) {
             audioMng = audioMng.getComponent('AudioMng');
         }
@@ -30,7 +37,7 @@ export default class ButtonScaler extends cc.Component {
         self.scaleUpAction = cc.scaleTo(self.transDuration, self.initScale);
         function onTouchDown (event) {
             this.stopAllActions();
-            if (audioMng) audioMng.playButton();
+            //if (audioMng) audioMng.playButton();
             this.runAction(self.scaleDownAction);
         }
         function onTouchUp (event) {

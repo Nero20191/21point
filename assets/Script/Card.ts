@@ -43,7 +43,7 @@ export default class NewClass extends cc.Component {
     start () {
 
     }
-    init(card){
+    init(card: { point: number; suit: number; pointName: string; isRedSuit: any; }){
         let isFaceCard : boolean = card.point > 10;
 
         console.log("Card init!")
@@ -67,11 +67,11 @@ export default class NewClass extends cc.Component {
         this.suit.spriteFrame = this.texSuitSmall[card.suit - 1];
     }
 
-    reveal(isFaceUp) {
+    reveal(isFaceUp: boolean) {
         this.point.node.active = isFaceUp;
         this.suit.node.active = isFaceUp;
         this.mainPic.node.active = isFaceUp;
         this.cardBG.spriteFrame = isFaceUp ? this.texFrontBG : this.texBackBG;
     }
-    update (dt) {}
+    update (dt: any) {}
 }

@@ -8,7 +8,7 @@
 const {ccclass, property} = cc._decorator;
 var Actor = require('Actor');
 var Utils = require('Utils');
-
+// import Utils from "./model/Util";
 @ccclass
 export default class Dealer extends cc.Component {
 
