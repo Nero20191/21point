@@ -37,8 +37,8 @@ export default class InGameUI extends cc.Component {
    
     // use this for initialization
     init(betDuration:number){
-        this.panelChat.active = false;
-        this.panelSocial.active = false;
+        //this.panelChat.active = false;
+        //this.panelSocial.active = false;
         this.resultTxt.enabled = false;
         this.betStateUI.active = true;
         this.gameStateUI.active = false;
@@ -46,7 +46,7 @@ export default class InGameUI extends cc.Component {
         this.btnStart.active = false;
         this.betDuration = betDuration;
         this.betTimer = 0;
-        this.isBetCounting = false;
+        //this.isBetCounting = false;
     }
     // update (dt) {}
     startCountdown() {

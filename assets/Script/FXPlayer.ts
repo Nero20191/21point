@@ -12,16 +12,8 @@ export default class FXPlayer extends cc.Component {
     anim: cc.Animation;
     sprite: cc.Sprite;
     
-
-    
-
-    // onLoad () {}
-
-    start () {
-
-    }
     // use this for initialization
-    init () {
+    init() {
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.getComponent(cc.Sprite);
     }
@@ -38,5 +30,5 @@ export default class FXPlayer extends cc.Component {
     hideFX () {
         this.sprite.enabled = false;
     }
-    // update (dt) {}
+    
 }

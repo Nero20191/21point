@@ -35,7 +35,7 @@ const players = [
 		photoIdx: 6
 	}
 ];
-
-module.exports = {
-	players: players
-};
+export{players}
+// module.exports = {
+// 	players: players
+// };

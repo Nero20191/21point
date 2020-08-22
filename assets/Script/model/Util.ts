@@ -1,7 +1,7 @@
-// const {ccclass, property} = cc._decorator;
+const {ccclass, property} = cc._decorator;
 
 // @ccclass
-// export default class AssetMng extends cc.Component {
+// export default class Util extends cc.Component {
 
   
 //     getMinMaxPoint (cards) {
@@ -43,7 +43,7 @@
 // } 
 
 //返回尽可能不超过 21 点的最小和最大点数
-function getMinMaxPoint (cards) {
+function getMinMaxPoint (cards: string | any[]) {
     var hasAce = false;
     var min = 0;
     for (var i = 0; i < cards.length; i++) {
@@ -66,7 +66,7 @@ function getMinMaxPoint (cards) {
     };
 }
  
-function isBust (cards) {
+function isBust (cards: string | any[]) {
     var sum = 0;
     for (var i = 0; i < cards.length; i++) {
         var card = cards[i];
@@ -75,13 +75,13 @@ function isBust (cards) {
     return sum > 21;
 }
  
-var isMobile = function () {
+let isMobile = function () {
     return cc.sys.isMobile;
 };
- 
-module.exports = {
-    isBust: isBust,
-    getMinMaxPoint: getMinMaxPoint,
-    isMobile: isMobile
-};
+export { isBust, getMinMaxPoint, isMobile } 
+// module.exports = {
+//     isBust: isBust,
+//     getMinMaxPoint: getMinMaxPoint,
+//     isMobile: isMobile
+// };
  

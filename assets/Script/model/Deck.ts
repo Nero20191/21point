@@ -9,8 +9,8 @@
 
 
 
-let Types = require('Type');
 
+import {Card} from "./Type";
 /**
  * 扑克管理类，用来管理一副或多副牌
  * @class Decks
@@ -33,7 +33,7 @@ function Decks (numberOfDecks:number) {
 Decks.prototype.reset = function () {
     this._cardIds.length = this._numberOfDecks * 52;
     var index = 0;
-    var fromId = Types.Card.fromId;
+    var fromId = Card.fromId;
     for (var i = 0; i < this._numberOfDecks; ++i) {
         for (var cardId = 0; cardId < 52; ++cardId) {
             this._cardIds[index] = fromId(cardId);
@@ -97,5 +97,5 @@ Decks.prototype.draw = function () {
 //    }
 //    return array;
 //}
-
-module.exports = Decks;
+export{Decks}
+// module.exports = Decks;

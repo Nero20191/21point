@@ -180,7 +180,7 @@
       "array": [
         0,
         0,
-        247.88896237314702,
+        247.82068371257486,
         0,
         0,
         0,
@@ -12391,52 +12391,28 @@
     "_id": "4dhlRXaflIMrVH4nAZU4oL"
   },
   {
-    "__type__": "63738OONCFKHqsf4QSeJSun",
+    "__type__": "1291eH5PptDkZiBtTVOsyvk",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 66
     },
     "_enabled": true,
-    "playerAnchors": [
-      {
-        "__id__": 25
-      },
-      {
-        "__id__": 28
-      },
-      {
-        "__id__": 31
-      },
-      {
-        "__id__": 34
-      },
-      {
-        "__id__": 37
-      }
-    ],
-    "playerPrefab": {},
-    "dealer": {
-      "__id__": 41
-    },
+    "playerAnchors": [],
+    "playerPrefab": null,
+    "dealer": null,
     "inGameUI": {
       "__id__": 67
     },
-    "betUI": {
-      "__id__": 174
-    },
-    "assetMng": {
-      "__id__": 265
-    },
-    "audioMng": {
-      "__id__": 263
-    },
-    "turnDuration": 10,
-    "betDuration": 10,
-    "totalChipsNum": 50000,
+    "betUI": null,
+    "assetMng": null,
+    "audioMng": null,
+    "turnDuration": 0,
+    "betDuration": 0,
+    "totalChipsNum": 0,
     "totalDiamondNum": 0,
     "numberOfDecks": 1,
-    "_id": "38przBH6dJurfunf23Gtzz"
+    "_id": "71RtiIJ9pCSI/gmtizfhOD"
   },
   {
     "__type__": "a171dSnCXFMRIqs1IWdvgWM",

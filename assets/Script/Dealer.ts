@@ -1,47 +1,29 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const {ccclass, property} = cc._decorator;
-var Actor = require('Actor');
-var Utils = require('Utils');
-// import Utils from "./model/Util";
+//let Actor  = require('./Actor');
+import Actor from "./Actor";
+import * as Util from "./model/Util";
+// import { getMinMaxPoint} from "./model/Util";
 @ccclass
-export default class Dealer extends cc.Component {
+export default class Dealer extends Actor {
 
-    
-
-    @property
     bestPoint= {
-        
-        get value() : number {
-            let cards = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
-            let minMax = Utils.getMinMaxPoint(cards);
+        get value() : any {
+            let cards :any = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
+            let minMax = Util.getMinMaxPoint(cards);
             return minMax.max
-        }
+        },
+        override:true
     };
-    _super: any;
-    renderer: any;
-
-
-    // onLoad () {}
-
-    start () {
-
-    }
     
     init() {
-        this._super();
-        this.renderer.initDealer();
+        super.init();
+        this.getComponent("ActorRenderer").initDealer();
     }
  
     // 返回是否要牌
     wantHit() {
         var Game = require('Game');
-        var Types = require('Types');
+        var Types = require('Type');
  
         let bestPoint = this.bestPoint;
  
@@ -55,8 +37,8 @@ export default class Dealer extends cc.Component {
             return true;
         }
  
-        var player = Game.instance.player;
-        var outcome = Game.instance._getPlayerResult(player, this);
+        let player = Game.instance.player;
+        let outcome = Game.instance._getPlayerResult(player, this);
  
         switch (outcome) {
             case Types.Outcome.Win:
@@ -67,7 +49,7 @@ export default class Dealer extends cc.Component {
  
         return this.bestPoint.value < 17;
     }
-    // update (dt) {}
+   
 }
 
  

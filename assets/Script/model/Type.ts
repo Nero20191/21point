@@ -1,18 +1,11 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 enum CardType {
     Spade = 1,   // 黑桃
     Heart = 2,   // 红桃
     Club = 3,    // 梅花(黑)
     Diamond = 4, // 方块(红)
 }
-let CardPoint : any[] = 'NAN,A,2,3,4,5,6,7,8,9,10,J,Q,K'.split(',');
+let CardPoint: any[] = 'NAN,A,2,3,4,5,6,7,8,9,10,J,Q,K'.split(',');
 
 
 /**
@@ -23,7 +16,7 @@ let CardPoint : any[] = 'NAN,A,2,3,4,5,6,7,8,9,10,J,Q,K'.split(',');
  * @param {Number} point - 可能的值为 1 到 13
  * @param {CardType} suit
  */
-function Card (point: number, suit: number) {
+function Card(point: number, suit: number) {
     Object.defineProperties(this, {
         point: {
             value: point,
@@ -71,7 +64,7 @@ Card.prototype.toString = function () {
 // 存放 52 张扑克的实例
 var cards = new Array(52);
 
-let cardArray : any[] = Array(52);
+let cardArray: any[] = Array(52);
 
 /**
  * 返回指定 id 的实例
@@ -82,7 +75,7 @@ Card.fromId = function (id) {
 };
 
 // 初始化所有扑克牌
-(function createCards () {
+(function createCards() {
     for (var s = 1; s <= 4; s++) {
         for (var p = 1; p <= 13; p++) {
             var card = new Card(p, s);
@@ -92,31 +85,36 @@ Card.fromId = function (id) {
 })();
 
 // 手中牌的状态
-var ActorPlayingState = cc.Enum({
-    Normal: -1,
-    Stand: -1,  // 停牌
-    Report: -1, // 报到
-    Bust: -1,   // 爆了
-});
 
+enum ActorPlayingState {
+    Normal = -1,
+    Stand = -1,  // 停牌
+    Report = -1, // 报到
+    Bust = -1,   // 爆了
+}
 // 输赢
-var Outcome = cc.Enum({
-    Win: -1,
-    Lose: -1,
-    Tie: -1,
-});
-
+enum Outcome {
+    Win = -1,
+    Lose = -1,
+    Tie = -1,
+}
 // 牌型，值越大越厉害
-var Hand = cc.Enum({
-    Normal: -1,     // 无
-    BlackJack: -1,  // 黑杰克
-    FiveCard: -1,   // 五小龙
-});
-
-module.exports = {
-    Suit: CardType,
-    Card: Card,
-    ActorPlayingState: ActorPlayingState,
-    Hand: Hand,
-    Outcome: Outcome,
-};
+enum Hand {
+    Normal = -1,     // 无
+    BlackJack = -1,  // 黑杰克
+    FiveCard = -1,
+}
+// module.exports = {
+//     Suit: CardType,
+//     Card: Card,
+//     ActorPlayingState: ActorPlayingState,
+//     Hand: Hand,
+//     Outcome: Outcome,
+// };
+export {
+    CardType,
+    Card,
+    ActorPlayingState,
+    Hand,
+    Outcome,
+}
