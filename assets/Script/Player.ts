@@ -26,7 +26,7 @@ export default class Player extends Actor  {
         // Game.instance.canReport = this.canReport;
     }
  
-    addStake(delta: any) {
+    addStake(delta: number) {
         this.stakeNum += delta;
         this.updateStake(this.stakeNum);
     }

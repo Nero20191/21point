@@ -48,9 +48,9 @@ class Game extends cc.Component {
   })
   numberOfDecks = 1;
 
-  // static instance: Game = null;
+  private static instance: Game  ;
   // public static instance = new Game();
-  // public static getInstance = () => Game.instance;
+  public static getInstance = () => Game.instance;
   
   player: any;
   info: any;
@@ -60,7 +60,9 @@ class Game extends cc.Component {
 
   // use this for initialization
   onLoad() {
-    // Game.instance = new Game();
+    Game.instance = this;
+    let game = Game.getInstance();
+    
     // Game.instance = this;
     //this.inGameUI = this.inGameUI.getComponent('InGameUI');
     let inGameUI = this.inGameUI.getComponent("InGameUI");
@@ -96,7 +98,7 @@ class Game extends cc.Component {
     //this.audioMng.playMusic();
   }
 
-  addStake(delta: number): boolean {
+  addStake(delta: any): boolean {
     if (this.totalChipsNum < delta) {
       console.log("not enough chips!");
       this.info.enabled = true;
@@ -249,7 +251,7 @@ class Game extends cc.Component {
   }
 
   // 结算
-  onEndState(enter) {
+  onEndState(enter: any) {
     if (enter) {
       let dealer = this.dealer.getComponent("Dealer");
       dealer.revealHoldCard();
@@ -297,14 +299,14 @@ class Game extends cc.Component {
   }
 
   // 下注
-  onBetState(enter) {
+  onBetState(enter: any) {
     if (enter) {
       this.decks.reset();
       this.player.reset();
       let dealer = this.dealer.getComponent("Dealer");
       dealer.reset();
       this.info.string = "请下注";
-      let inGameUI = this.inGameUI.getComponent("inGameUI");
+      let inGameUI = this.inGameUI.getComponent("InGameUI");
       inGameUI.showBetState();
       inGameUI.startCountdown();
 
@@ -347,7 +349,7 @@ class Game extends cc.Component {
 }
 
 export default Game;
-
+;
 // cc.Class({
 //     extends: cc.Component,
 
