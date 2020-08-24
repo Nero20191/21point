@@ -37,10 +37,13 @@
     "_components": [
       {
         "__id__": 63
+      },
+      {
+        "__id__": 64
       }
     ],
     "_prefab": {
-      "__id__": 64
+      "__id__": 65
     },
     "_opacity": 255,
     "_color": {
@@ -2323,6 +2326,28 @@
       "__id__": 58
     },
     "cardSpace": 30,
+    "_id": ""
+  },
+  {
+    "__type__": "8a063yc8aFDdI64sjKg1W9t",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "bestPoint": {
+      "get": null
+    },
+    "hand": {
+      "get": null
+    },
+    "canReport": {
+      "get": null
+    },
+    "renderer": {
+      "__id__": 1
+    },
     "_id": ""
   },
   {

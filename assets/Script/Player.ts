@@ -1,24 +1,26 @@
 
 const {ccclass, property} = cc._decorator;
-var Actor = require('Actor');
-import Actor1 from './Actor';
+//var Actor = require('Actor');
+import Actor from "./Actor";
 @ccclass
 export default class Player extends Actor  {
+    labelStake: any;
+    stakeNum: number;
     // LIFE-CYCLE CALLBACKS:
 
     init() {
-        this._super();
-        this.labelStake = this.renderer.labelStakeOnTable;
+        super.init();
+        this.labelStake = this.renderer.getComponent("ActorRenderer").labelStakeOnTable;
         this.stakeNum = 0;
     }
  
     reset() {
-        this._super();
+        super.reset();
         this.resetStake();
     }
  
     addCard(card: any) {
-        this._super(card);
+        super.addCard(card);
  
         // var Game = require('Game');
         // Game.instance.canReport = this.canReport;

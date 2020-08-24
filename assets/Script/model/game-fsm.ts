@@ -1,11 +1,12 @@
 var State = require('state.com');
+// import * as State from "../lib/state.com"
+//import State = require("../lib/state.com.js")
+let instance: any;
+let model: any;
+let playing: { to: (arg0: any) => { (): any; new(): any; when: { (arg0: (msgToEvaluate: any) => boolean): void; new(): any; }; }; };
  
-var instance;
-var model;
-var playing;
- 
-function on (message) {
-    return function (msgToEvaluate) {
+function on (message: string) {
+    return function (msgToEvaluate: any) {
         return msgToEvaluate === message;
     };
 }
@@ -13,7 +14,7 @@ function on (message) {
 var evaluating = false;
  
 exports = {
-    init: function (target) {
+    init: function (target: { onBetState: (arg0: boolean) => void; onEndState: (arg0: boolean) => void; onEnterDealState: () => void; onPlayersTurnState: (arg0: boolean) => void; onEnterDealersTurnState: () => void; }) {
         // send log messages, warnings and errors to the console
         State.console = console;
  
@@ -91,7 +92,7 @@ exports = {
         this._evaluate('end');
     },
  
-    _evaluate: function (message) {
+    _evaluate: function (message: any) {
         if (evaluating) {
             // can not call fsm's evaluate recursively
             setTimeout(function () {

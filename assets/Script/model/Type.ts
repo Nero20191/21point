@@ -70,7 +70,7 @@ let cardArray: any[] = Array(52);
  * 返回指定 id 的实例
  * @param {Number} id - 0 到 51
  */
-Card.fromId = function (id) {
+Card.fromId = function (id: number) {
     return cards[id];
 };
 

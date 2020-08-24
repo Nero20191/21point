@@ -27,12 +27,10 @@ var StateJS;
          * @param {Behavior} behavior The Action or set of Actions callbacks to add to this behavior instance.
          * @returns {Behavior} Returns this behavior instance (for use in fluent style development).
          */
-
-        // Behavior.prototype.push = function (behavior) {
-        //     Array.prototype.push.apply(this.actions, behavior instanceof Behavior ? behavior.actions : arguments);
-        //     return this;
-        // };
-        
+        Behavior.prototype.push = function (behavior) {
+            Array.prototype.push.apply(this.actions, behavior instanceof Behavior ? behavior.actions : arguments);
+            return this;
+        };
         /**
          * Tests the Behavior instance to see if any actions have been defined.
          * @method hasActions

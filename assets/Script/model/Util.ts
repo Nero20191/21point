@@ -44,16 +44,16 @@ const {ccclass, property} = cc._decorator;
 
 //返回尽可能不超过 21 点的最小和最大点数
 function getMinMaxPoint (cards: string | any[]) {
-    var hasAce = false;
-    var min = 0;
-    for (var i = 0; i < cards.length; i++) {
-        var card = cards[i];
+    let hasAce = false;
+    let min = 0;
+    for (let i = 0; i < cards.length; i++) {
+        let card = cards[i];
         if (card.point === 1) {
             hasAce = true;
         }
         min += Math.min(10, card.point);
     }
-    var max = min;
+    let max = min;
     // 如果有 1 个 A 可以当成 11
     if (hasAce && min + 10 <= 21) {
         // （如果两个 A 都当成 11，那么总分最小也会是 22，爆了，所以最多只能有一个 A 当成 11）
@@ -78,10 +78,6 @@ function isBust (cards: string | any[]) {
 let isMobile = function () {
     return cc.sys.isMobile;
 };
-export { isBust, getMinMaxPoint, isMobile } 
-// module.exports = {
-//     isBust: isBust,
-//     getMinMaxPoint: getMinMaxPoint,
-//     isMobile: isMobile
-// };
+export const Util = { isBust, getMinMaxPoint, isMobile } 
+
  

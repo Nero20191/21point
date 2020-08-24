@@ -9,7 +9,7 @@ import { CardType, Card, ActorPlayingState, Hand, Outcome } from "./model/Type";
 var Fsm = require("game-fsm");
 
 @ccclass
-export default class Game extends cc.Component {
+class Game extends cc.Component {
   @property([cc.Node])
   playerAnchors: cc.Node[] = [];
 
@@ -48,7 +48,10 @@ export default class Game extends cc.Component {
   })
   numberOfDecks = 1;
 
-  static instance: any;
+  // static instance: Game = null;
+  // public static instance = new Game();
+  // public static getInstance = () => Game.instance;
+  
   player: any;
   info: any;
   totalChips: any;
@@ -57,7 +60,8 @@ export default class Game extends cc.Component {
 
   // use this for initialization
   onLoad() {
-    Game.instance = this;
+    // Game.instance = new Game();
+    // Game.instance = this;
     //this.inGameUI = this.inGameUI.getComponent('InGameUI');
     let inGameUI = this.inGameUI.getComponent("InGameUI");
     console.log("inGameUI");
@@ -70,8 +74,8 @@ export default class Game extends cc.Component {
     //this.inGameUI.init(this.betDuration);
     console.log("init");
     betUI.init();
-    //let dealer = this.dealer.getComponent('Dealer');
-    //dealer.init();
+    let dealer = this.dealer.getComponent("Dealer");
+    dealer.init();
 
     //
     this.player = null;
@@ -87,7 +91,7 @@ export default class Game extends cc.Component {
     this.fsm.init(this);
 
     // start
-    //this.updateTotalChips();
+    this.updateTotalChips();
 
     //this.audioMng.playMusic();
   }
@@ -102,7 +106,7 @@ export default class Game extends cc.Component {
       this.totalChipsNum -= delta;
       this.updateTotalChips();
       this.player.addStake(delta);
-      //(this as any).audioMng.playChips();
+      //this.audioMng.playChips();
       this.info.enabled = false;
       this.info.string = "请下注";
       return true;
@@ -121,22 +125,23 @@ export default class Game extends cc.Component {
   }
 
   createPlayers() {
-    for (var i = 0; i < 5; ++i) {
+    for (var i = 0; i < 3; ++i) {
       var playerNode = cc.instantiate(this.playerPrefab);
       var anchor = this.playerAnchors[i];
       var switchSide = i > 2;
       anchor.addChild(playerNode);
       playerNode.position = cc.v3(0, 0);
-
+      let player_s: any[] = players;
       var playerInfoPos = cc.find("anchorPlayerInfo", anchor).getPosition();
       var stakePos = cc.find("anchorStake", anchor).getPosition();
       var actorRenderer = playerNode.getComponent("ActorRenderer");
       actorRenderer.init(
-        players[i],
+        player_s[i],
         playerInfoPos,
         stakePos,
         this.turnDuration,
-        switchSide
+        switchSide,
+        this
       );
       if (i === 2) {
         this.player = playerNode.getComponent("Player");
@@ -155,7 +160,7 @@ export default class Game extends cc.Component {
       this.fsm.onPlayerActed();
     }
 
-    (this as any).audioMng.playCard();
+    //this.audioMng.playCard();
 
     //if (this.dealer.state === ActorPlayingState.Normal) {
     //    if (this.dealer.wantHit()) {
@@ -169,14 +174,14 @@ export default class Game extends cc.Component {
     //if (this.dealer.state === ActorPlayingState.Bust) {
     //    this.state = GamingState.End;
     //}
-    (this as any).audioMng.playButton();
+    //this.audioMng.playButton();
   }
 
   // 玩家停牌
   stand() {
     this.player.stand();
 
-    (this as any).audioMng.playButton();
+    //this.audioMng.playButton();
 
     // if every player end
     this.fsm.onPlayerActed();
@@ -185,13 +190,13 @@ export default class Game extends cc.Component {
   //
   deal() {
     this.fsm.toDeal();
-    (this as any).audioMng.playButton();
+    //this.audioMng.playButton();
   }
 
   //
   start() {
     this.fsm.toBet();
-    (this as any).audioMng.playButton();
+    //this.audioMng.playButton();
   }
 
   // 玩家报到
@@ -209,30 +214,35 @@ export default class Game extends cc.Component {
   // FSM CALLBACKS
 
   onEnterDealState() {
-    (this as any).betUI.resetTossedChips();
-    (this as any).inGameUI.resetCountdown();
+    let betUI = this.betUI.getComponent("Bet");
+    betUI.resetTossedChips();
+    let inGameUI = this.inGameUI.getComponent("inGameUI");
+    inGameUI.resetCountdown();
     this.player.renderer.showStakeChips(this.player.stakeNum);
     this.player.addCard(this.decks.draw());
     var holdCard = this.decks.draw();
-    (this as any).dealer.addHoleCard(holdCard);
+    let dealer = this.dealer.getComponent("Dealer");
+    dealer.addHoleCard(holdCard);
     this.player.addCard(this.decks.draw());
-    (this as any).dealer.addCard(this.decks.draw());
-    (this as any).audioMng.playCard();
+    dealer.addCard(this.decks.draw());
+    //this.audioMng.playCard();
     this.fsm.onDealed();
   }
 
-  onPlayersTurnState(enter) {
+  onPlayersTurnState(enter: any) {
     if (enter) {
-      (this as any).inGameUI.showGameState();
+      let inGameUI = this.inGameUI.getComponent("inGameUI");
+      inGameUI.showGameState();
     }
   }
 
   onEnterDealersTurnState() {
-    while ((this as any).dealer.state === ActorPlayingState.Normal) {
-      if ((this as any).dealer.wantHit()) {
-        (this as any).dealer.addCard(this.decks.draw());
+    let dealer = this.dealer.getComponent("Dealer");
+    while (dealer.state === ActorPlayingState.Normal) {
+      if (dealer.wantHit()) {
+        dealer.addCard(this.decks.draw());
       } else {
-        (this as any).dealer.stand();
+        dealer.stand();
       }
     }
     this.fsm.onDealerActed();
@@ -241,21 +251,23 @@ export default class Game extends cc.Component {
   // 结算
   onEndState(enter) {
     if (enter) {
-      (this as any).dealer.revealHoldCard();
-      (this as any).inGameUI.showResultState();
+      let dealer = this.dealer.getComponent("Dealer");
+      dealer.revealHoldCard();
+      let inGameUI = this.inGameUI.getComponent("inGameUI");
+      inGameUI.showResultState();
 
-      var outcome = this._getPlayerResult(this.player, this.dealer);
+      let outcome = this._getPlayerResult(this.player, this.dealer);
       switch (outcome) {
-        case Types.Outcome.Win:
+        case Outcome.Win:
           this.info.string = "You Win";
-          (this as any).audioMng.pauseMusic();
-          (this as any).audioMng.playWin();
+          //(this as any).audioMng.pauseMusic();
+          //(this as any).audioMng.playWin();
           // 拿回原先自己的筹码
           this.totalChipsNum += this.player.stakeNum;
           // 奖励筹码
           var winChipsNum = this.player.stakeNum;
-          if (!this.player.state === Types.ActorPlayingState.Report) {
-            if (this.player.hand === Types.Hand.BlackJack) {
+          if ((!this.player.state as any) === ActorPlayingState.Report) {
+            if (this.player.hand === Hand.BlackJack) {
               winChipsNum *= 1.5;
             } else {
               // 五小龙
@@ -266,13 +278,13 @@ export default class Game extends cc.Component {
           this.updateTotalChips();
           break;
 
-        case Types.Outcome.Lose:
+        case Outcome.Lose:
           this.info.string = "You Lose";
-          (this as any).audioMng.pauseMusic();
-          (this as any).audioMng.playLose();
+          //(this as any).audioMng.pauseMusic();
+          //(this as any).audioMng.playLose();
           break;
 
-        case Types.Outcome.Tie:
+        case Outcome.Tie:
           this.info.string = "Draw";
           // 退还筹码
           this.totalChipsNum += this.player.stakeNum;
@@ -289,12 +301,14 @@ export default class Game extends cc.Component {
     if (enter) {
       this.decks.reset();
       this.player.reset();
-      (this as any).dealer.reset();
+      let dealer = this.dealer.getComponent("Dealer");
+      dealer.reset();
       this.info.string = "请下注";
-      this.inGameUI.showBetState();
-      (this as any).inGameUI.startCountdown();
+      let inGameUI = this.inGameUI.getComponent("inGameUI");
+      inGameUI.showBetState();
+      inGameUI.startCountdown();
 
-      (this as any).audioMng.resumeMusic();
+      //(this as any).audioMng.resumeMusic();
     }
     this.info.enabled = enter;
   }
@@ -303,26 +317,26 @@ export default class Game extends cc.Component {
 
   // 判断玩家输赢
   _getPlayerResult(player, dealer) {
-    var Outcome = Types.Outcome;
+    let outcome = Outcome;
     if (player.state === ActorPlayingState.Bust) {
-      return Outcome.Lose;
+      return outcome.Lose;
     } else if (dealer.state === ActorPlayingState.Bust) {
-      return Outcome.Win;
+      return outcome.Win;
     } else {
       if (player.state === ActorPlayingState.Report) {
-        return Outcome.Win;
+        return outcome.Win;
       } else {
         if (player.hand > dealer.hand) {
-          return Outcome.Win;
+          return outcome.Win;
         } else if (player.hand < dealer.hand) {
-          return Outcome.Lose;
+          return outcome.Lose;
         } else {
           if (player.bestPoint === dealer.bestPoint) {
-            return Outcome.Tie;
+            return outcome.Tie;
           } else if (player.bestPoint < dealer.bestPoint) {
-            return Outcome.Lose;
+            return outcome.Lose;
           } else {
-            return Outcome.Win;
+            return outcome.Win;
           }
         }
       }
@@ -331,6 +345,8 @@ export default class Game extends cc.Component {
 
   // update (dt) {}
 }
+
+export default Game;
 
 // cc.Class({
 //     extends: cc.Component,

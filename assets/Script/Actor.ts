@@ -1,141 +1,129 @@
 const { ccclass, property } = cc._decorator;
 
-import {
-    ActorPlayingState,
-    Hand,
-    Outcome
-} from "./model/Type"
-import { isBust, getMinMaxPoint } from "./model/Util"
-import ActorRender from "./ActorRender"
+import { ActorPlayingState as _ActorPlayingState, Hand } from "./model/Type";
+import { Util } from "./model/Util";
+let ActorPlayingState = _ActorPlayingState;
 
 @ccclass
 export default class Actor extends cc.Component {
+  @property({
+    serializable: false,
+    visible: false,
+  })
+  cards = [];
 
-    @property({
-        serializable: false,
-        visible: false
-    })
-    cards = [];
+  @property({
+    serializable: false,
+    visible: false,
+  })
+  holeCard = null;
 
-    @property({
-        serializable: false,
-        visible: false
-    })
-    holeCard = null;
+  ready: boolean;
 
-    ready: boolean;
+  @property
+  bestPoint = {
+    get (): number {
+      let minMax = Util.getMinMaxPoint(this.cards);
+      return minMax.max;
+    },
+  };
 
-    @property
-    public get bestPoint(): any {
-        let minMax = getMinMaxPoint(this.cards);
-        return minMax.max;
+  @property
+  hand = {
+    get (): number {
+      let count = this.cards.length;
+      if (this.holeCard) {
+        ++count;
+      }
+      if (count >= 5) {
+        return Hand.FiveCard;
+      }
+      if (count === 2 && this.bestPoint === 21) {
+        return Hand.BlackJack;
+      }
+      return Hand.Normal;
+    },
+  };
+
+  @property({
+    visible: false,
+  })
+  canReport = {
+    get (): any {
+      return this.hand !== Hand.Normal;
+    },
+  };
+
+  @property(cc.Node)
+  renderer: cc.Node = null;
+
+  @property({
+    serializable: false,
+  })
+  state:any = ActorPlayingState.Normal;
+  get eventParam(): any {
+    return this.state;
+  }
+  set eventParam(oldState: any) {
+    this.notify(this.state);
+    this.state = oldState;
+  }
+  notify(oldState: any) {
+    if (this.state !== oldState) {
+      this.getComponent("ActorRenderer").updateState();
     }
+  }
 
-    @property
-    public get hand(): any {
-        let count = this.cards.length;
-        if (this.holeCard) {
-            ++count;
-        } if (count >= 5) {
-            return Hand.FiveCard;
-        }
-        if (count === 2 && this.bestPoint === 21) {
-            return Hand.BlackJack;
-        }
-        return Hand.Normal;
+
+  init() {
+    this.ready = true;
+    this.renderer = this.getComponent("ActorRenderer");
+  }
+
+  addCard(card: any) {
+    let t = this;
+    t.cards.push(card);
+    t.getComponent("ActorRenderer").onDeal(card, true);
+
+    var cards = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
+    if (Util.isBust(cards)) {
+      this.state = ActorPlayingState.Bust;
     }
+  }
 
-    @property({
-        visible: false
-    })
-    public get canReport(): any {
-        return this.hand !== Hand.Normal;
+  addHoleCard(card: any) {
+    this.holeCard = card;
+    this.getComponent("ActorRenderer").onDeal(card, false);
+  }
+
+  stand() {
+    this.state = ActorPlayingState.Stand;
+  }
+
+  revealHoldCard() {
+    if (this.holeCard) {
+      this.cards.unshift(this.holeCard);
+      this.holeCard = null;
+      this.getComponent("ActorRenderer").onRevealHoldCard();
     }
+  }
 
-    @property(cc.Node)
-    renderer: cc.Node = null;
+  // revealNormalCard() {
+  //     this.onRevealNormalCard();
+  // }
 
-    @property({
-        serializable: false
-    })
-    state = ActorPlayingState.Normal
+  report() {
+    this.state = ActorPlayingState.Report;
+  }
 
-    @property
-    _eventParams: any;
-    public get eventParam(): any {
-        return this._eventParams;
-    }
-    public set eventParam(newState: any) {
-        this.notify(this.state, newState);
-        this._eventParams = newState;
-    }
-    notify(oldState: any, newState: any) {
-        if (newState !== oldState) {
-                    this.getComponent("ActorRenderer").updateState();
-                }
-    }
-
-    //     state: {
-    //         default: ActorPlayingState.Normal,
-    //         notify(oldState: any) {
-    //     if (this.state !== oldState) {
-    //         this.renderer.updateState();
-    //     }
-    // }
-    // type: ActorPlayingState,
-    //     serializable: false,
-    //     }
-
-    init() {
-        this.ready = true;
-        this.renderer = this.getComponent("ActorRenderer");
-    }
-
-    addCard(card: any) {
-        let t = this;
-        t.cards.push(card);
-        t.getComponent("ActorRenderer").onDeal(card, true);
-
-        var cards = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
-        if (isBust(cards)) {
-            this.state = ActorPlayingState.Bust;
-        }
-    }
-
-    addHoleCard(card: any) {
-        this.holeCard = card;
-        this.getComponent("ActorRenderer").onDeal(card, false);
-    }
-
-    stand() {
-        this.state = ActorPlayingState.Stand;
-    }
-
-    revealHoldCard() {
-        if (this.holeCard) {
-            this.cards.unshift(this.holeCard);
-            this.holeCard = null;
-            this.getComponent("ActorRenderer").onRevealHoldCard();
-        }
-    }
-
-    // revealNormalCard() {
-    //     this.onRevealNormalCard();
-    // }
-
-    report() {
-        this.state = ActorPlayingState.Report;
-    }
-
-    reset() {
-        this.cards = [];
-        this.holeCard = null;
-        // this.reported = false;
-        this.state = ActorPlayingState.Normal;
-        this.getComponent("ActorRenderer").onReset();
-    }
+  reset() {
+    this.cards = [];
+    this.holeCard = null;
+    // this.reported = false;
+    this.state = ActorPlayingState.Normal;
+    this.getComponent("ActorRenderer").onReset();
+  }
 }
-
 
 // cc.Class({
 //     extends: cc.Component,
@@ -250,4 +238,3 @@ export default class Actor extends cc.Component {
 //         this.renderer.onReset();
 //     }
 // });
-

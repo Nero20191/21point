@@ -1,53 +1,63 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const { ccclass, property } = cc._decorator;
 
-var Game = require('Game');
+import Game from "./Game";
+// var Game = require('Game');
 var Types = require('Type');
 var Utils = require('Util');
 var ActorPlayingState = Types.ActorPlayingState;
 
 @ccclass
-export default class ActorRender extends cc.Component {
+export default class ActorRenderer extends cc.Component {
 
     
     @property(cc.Node)
     playerInfo: cc.Node = null;
+
     @property(cc.Node)
     stakeOnTable: cc.Node = null;
+
     @property(cc.Node)
     cardInfo: cc.Node = null;
+
     @property(cc.Prefab)
     cardPrefab: cc.Prefab = null;
+
     @property(cc.Node)
     anchorCards: cc.Node = null;
+
     @property(cc.Sprite)
     spPlayerName: cc.Sprite = null;
+
     @property(cc.Label)
     labelPlayerName: cc.Label = null;
+
     @property(cc.Label)
     labelTotalStake: cc.Label = null;
+
     @property(cc.Sprite)
     spPlayerPhoto: cc.Sprite = null;
+
     @property(cc.ProgressBar)
     callCounter: cc.ProgressBar = null;
+
     @property(cc.Label)
     labelStakeOnTable: cc.Label = null;
+
     @property([cc.Sprite])
     spChips: cc.Sprite[] = [];
+
     @property(cc.Label)
     labelCardInfo: cc.Label = null;
+
     @property(cc.Sprite)
     spCardInfo: cc.Sprite = null;
+
     @property(cc.Node)
     animFX: cc.Node;
+
     @property
     cardSpace = 0;
+
     actor: any;
     isCounting: boolean;
     counterTimer: number;
@@ -59,7 +69,7 @@ export default class ActorRender extends cc.Component {
     onLoad() {
     }
 
-    init(playerInfo: { name: string; gold: any; photoIdx: number; }, playerInfoPos: cc.Vec3, stakePos: cc.Vec3, turnDuration: any, switchSide: any) {
+    init(playerInfo: { name: string; gold: any; photoIdx: number; }, playerInfoPos: cc.Vec3, stakePos: cc.Vec3, turnDuration: any, switchSide: any, game: Game) {
         // actor
         this.actor = this.getComponent('Actor');
 
@@ -73,11 +83,11 @@ export default class ActorRender extends cc.Component {
         this.labelPlayerName.string = playerInfo.name;
         this.updateTotalStake(playerInfo.gold);
         var photoIdx = playerInfo.photoIdx % 5;
-        this.spPlayerPhoto.spriteFrame = Game.instance.assetMng.playerPhotos[photoIdx];
+        this.spPlayerPhoto.spriteFrame = game.assetMng.getComponent('AssetMng').playerPhotos[photoIdx];
         // fx
-        this.animFX = this.animFX.getComponent('FXPlayer');
-        this.animFX.init();
-        this.animFX.show(false);
+       let animFX = this.animFX.getComponent('FXPlayer');
+        animFX.init();
+        animFX.show(false);
 
         this.cardInfo.active = false;
 
@@ -103,9 +113,9 @@ export default class ActorRender extends cc.Component {
         // actor
         this.actor = this.getComponent('Actor');
         // fx
-        this.animFX = this.animFX.getComponent('FXPlayer');
-        this.animFX.init();
-        this.animFX.show(false);
+        let animFX = this.animFX.getComponent('FXPlayer');
+        animFX.init();
+        animFX.show(false);
     }
 
     updateTotalStake(num: string) {
@@ -128,11 +138,11 @@ export default class ActorRender extends cc.Component {
     }
 
     playBlackJackFX() {
-        this.animFX.playFX('blackjack');
+        this.animFX.getComponent('FXPlayer').playFX('blackjack');
     }
 
     playBustFX() {
-        this.animFX.playFX('bust');
+        this.animFX.getComponent('FXPlayer').playFX('baopai');
     }
 
     onDeal(card: any, show: any) {
@@ -181,8 +191,8 @@ export default class ActorRender extends cc.Component {
 
         switch (this.actor.hand) {
             case Types.Hand.BlackJack:
-                this.animFX.show(true);
-                this.animFX.playFX('blackjack');
+                this.animFX.getComponent('FXPlayer').show(true);
+                this.animFX.getComponent('FXPlayer').playFX('blackjack');
                 break;
             case Types.Hand.FiveCard:
                 // TODO
@@ -228,12 +238,13 @@ export default class ActorRender extends cc.Component {
                 this.updatePoint();
                 break;
             case ActorPlayingState.Bust:
-                var min = Utils.getMinMaxPoint(this.actor.cards).min;
+                let min = Utils.getMinMaxPoint(this.actor.cards).min;
                 this.labelCardInfo.string = '爆牌(' + min + ')';
                 this.spCardInfo.spriteFrame = Game.instance.assetMng.texBust;
                 this.cardInfo.active = true;
-                this.animFX.show(true);
-                this.animFX.playFX('bust');
+                let animFX = this.animFX.getComponent('FXPlayer');
+                animFX.show(true);
+                animFX.playFX('baopai');
                 this.resetCountdown();
                 break;
             case ActorPlayingState.Stand:
