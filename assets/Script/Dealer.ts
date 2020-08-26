@@ -1,57 +1,66 @@
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 //let Actor  = require('./Actor');
 import Actor from "./Actor";
 //import * as Util from "./model/Util";
-import {Util} from "./model/Util";
+import { isBust, getMinMaxPoint, isMobile } from "./model/Util";
+import Game from "./Game";
+import { CardType, Card, ActorPlayingState, Hand, Outcome } from "./model/Type";
+
 @ccclass
 export default class Dealer extends Actor {
-    @property
-    bestPoint= {
-        get() : any {
-            let cards :any = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
-            let minMax = Util.getMinMaxPoint(cards);
-            return minMax.max
-        },
-        override:true
-    };
-    
-    init() {
-        super.init();
-        //this.getComponent("ActorRenderer").initDealer();
-        let renderer = this.getComponent("ActorRenderer");
-        renderer.initDealer();
+  @property({ override: true })
+  get bestPoint() {
+    let t = this;
+    let cards: any = t.holeCard ? [t.holeCard].concat(t.cards) : t.cards;
+    let minMax = getMinMaxPoint(cards);
+    return minMax.max;
+  }
+  // @property
+  // private bestPoint: number;
+
+  // public get bestPoint():number{
+  //   let t = this;
+  //   let cards: any = t.holeCard
+  //     ? [t.holeCard].concat(t.cards)
+  //     : t.cards;
+  //   let minMax = getMinMaxPoint(cards);
+  //   return minMax.max;
+  // }
+
+  init() {
+    super.init();
+    //this.getComponent("ActorRenderer").initDealer();
+    let renderer = this.getComponent("ActorRenderer");
+    renderer.initDealer();
+  }
+
+  // 返回是否要牌
+  wantHit() {
+    let game = Game.getInstance();
+    let bP = this.bestPoint;
+
+    // 已经最大点数
+    if (bP === 21) {
+      return false;
     }
- 
-    // 返回是否要牌
-    wantHit() {
-        let Game = require('Game');
-        let Types = require('Type');
- 
-        let bestPoint = this.bestPoint.get();
- 
-        // 已经最大点数
-        if (bestPoint=== 21) {
-            return false;
-        }
- 
-        // 不论抽到什么牌肯定不会爆，那就接着抽
-        if (bestPoint <= 21 - 10) {
-            return true;
-        }
- 
-        let player = Game.instance.player;
-        let outcome = Game.instance._getPlayerResult(player, this);
- 
-        switch (outcome) {
-            case Types.Outcome.Win:
-                return true;
-            case Types.Outcome.Lose:
-                return false;
-        }
- 
-        return this.bestPoint.get() < 17;
+
+    // 不论抽到什么牌肯定不会爆，那就接着抽
+    if (bP <= 21 - 10) {
+      return true;
     }
-   
+
+    let player = game.player;
+    let outcome = game._getPlayerResult(player, this);
+
+    switch (outcome) {
+      case Outcome.Win:
+        return true;
+      case Outcome.Lose:
+        return false;
+    }
+
+    return this.bestPoint < 17;
+  }
 }
 
 // var Actor = require('Actor');
@@ -107,6 +116,3 @@ export default class Dealer extends Actor {
 //         return this.bestPoint < 17;
 //     },
 // });
-
-
- 

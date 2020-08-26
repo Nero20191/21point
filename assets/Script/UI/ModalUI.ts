@@ -1,28 +1,38 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
+//暂时没用
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class ModalUI extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(cc.Node)
+    mask: cc.Node ;
 
-    @property
-    text: string = 'hello';
-
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
-
-    start () {
-
+    onLoad() {
+ 
     }
+ 
+    onEnable() {
+        this.mask.on('touchstart', function (event) {
+            event.stopPropagation();
+        });
+        this.mask.on('touchend', function (event) {
+            event.stopPropagation();
+        });
+    }
+ 
+    onDisable() {
+        this.mask.off('touchstart', function (event) {
+            event.stopPropagation();
+        });
+        this.mask.off('touchend', function (event) {
+            event.stopPropagation();
+        });
+    }
+ 
+    // called every frame, uncomment this function to activate update callback
 
     // update (dt) {}
 }
+
+
+ 

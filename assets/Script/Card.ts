@@ -25,8 +25,10 @@ export default class Card extends cc.Component {
  
     @property([cc.SpriteFrame]) 
     texFaces: cc.SpriteFrame[] = [];
+
     @property([cc.SpriteFrame]) 
     texSuitBig: cc.SpriteFrame[] = [];
+    
     @property([cc.SpriteFrame]) 
     texSuitSmall: cc.SpriteFrame[] = [];    
     

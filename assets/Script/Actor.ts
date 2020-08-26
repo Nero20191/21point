@@ -1,7 +1,7 @@
 const { ccclass, property } = cc._decorator;
 
 import { ActorPlayingState as _ActorPlayingState, Hand } from "./model/Type";
-import { Util } from "./model/Util";
+import { isBust, getMinMaxPoint, isMobile } from "./model/Util";
 let ActorPlayingState = _ActorPlayingState;
 
 @ccclass
@@ -21,35 +21,31 @@ export default class Actor extends cc.Component {
   ready: boolean;
 
   @property
-  bestPoint = {
-    get (): number {
-      let minMax = Util.getMinMaxPoint(this.cards);
-      return minMax.max;
-    },
-  };
+  get bestPoint() {
+    let minMax = getMinMaxPoint(this.cards);
+    return minMax.max;
+  }
 
   @property
-  hand = {
-    get (): number {
-      let count = this.cards.length;
-      if (this.holeCard) {
-        ++count;
-      }
-      if (count >= 5) {
-        return Hand.FiveCard;
-      }
-      if (count === 2 && this.bestPoint === 21) {
-        return Hand.BlackJack;
-      }
-      return Hand.Normal;
-    },
-  };
+  get hand() {
+    let count = this.cards.length;
+    if (this.holeCard) {
+      ++count;
+    }
+    if (count >= 5) {
+      return Hand.FiveCard;
+    }
+    if (count === 2 && this.bestPoint === 21) {
+      return Hand.BlackJack;
+    }
+    return Hand.Normal;
+  }
 
   @property({
     visible: false,
   })
   canReport = {
-    get (): any {
+    get(): any {
       return this.hand !== Hand.Normal;
     },
   };
@@ -60,7 +56,7 @@ export default class Actor extends cc.Component {
   @property({
     serializable: false,
   })
-  state:any = ActorPlayingState.Normal;
+  state: any = ActorPlayingState.Normal;
   get eventParam(): any {
     return this.state;
   }
@@ -74,7 +70,6 @@ export default class Actor extends cc.Component {
     }
   }
 
-
   init() {
     this.ready = true;
     this.renderer = this.getComponent("ActorRenderer");
@@ -85,8 +80,8 @@ export default class Actor extends cc.Component {
     t.cards.push(card);
     t.getComponent("ActorRenderer").onDeal(card, true);
 
-    var cards = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
-    if (Util.isBust(cards)) {
+    let cards = this.holeCard ? [this.holeCard].concat(this.cards) : this.cards;
+    if (isBust(cards)) {
       this.state = ActorPlayingState.Bust;
     }
   }

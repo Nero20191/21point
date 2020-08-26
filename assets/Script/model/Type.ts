@@ -35,22 +35,22 @@ function Card(point: number, suit: number) {
         },
         //
         pointName: {
-            get: function () {
+            get() {
                 return CardPoint[this.point];
             }
         },
         suitName: {
-            get: function () {
+            get() {
                 return CardType[this.suit];
             }
         },
         isBlackSuit: {
-            get: function () {
+            get() {
                 return this.suit === CardType.Spade || this.suit === CardType.Club;
             }
         },
         isRedSuit: {
-            get: function () {
+            get() {
                 return this.suit === CardType.Heart || this.suit === CardType.Diamond;
             }
         },
@@ -87,22 +87,22 @@ Card.fromId = function (id: number) {
 // 手中牌的状态
 
 enum ActorPlayingState {
-    Normal = -1,
-    Stand = -1,  // 停牌
-    Report = -1, // 报到
-    Bust = -1,   // 爆了
+    Normal = 0,
+    Stand ,  // 停牌
+    Report , // 报到
+    Bust ,   // 爆了
 }
 // 输赢
 enum Outcome {
-    Win = -1,
-    Lose = -1,
-    Tie = -1,
+    Win = 0,
+    Lose ,
+    Tie ,
 }
 // 牌型，值越大越厉害
 enum Hand {
-    Normal = -1,     // 无
-    BlackJack = -1,  // 黑杰克
-    FiveCard = -1,
+    Normal = 0,     // 无
+    BlackJack ,  // 黑杰克
+    FiveCard ,
 }
 // module.exports = {
 //     Suit: CardType,

@@ -43,7 +43,7 @@ const {ccclass, property} = cc._decorator;
 // } 
 
 //返回尽可能不超过 21 点的最小和最大点数
-function getMinMaxPoint (cards: string | any[]) {
+function getMinMaxPoint (cards: any[]) {
     let hasAce = false;
     let min = 0;
     for (let i = 0; i < cards.length; i++) {
@@ -66,10 +66,10 @@ function getMinMaxPoint (cards: string | any[]) {
     };
 }
  
-function isBust (cards: string | any[]) {
-    var sum = 0;
-    for (var i = 0; i < cards.length; i++) {
-        var card = cards[i];
+function isBust (cards: any[]) {
+    let sum = 0;
+    for (let i = 0; i < cards.length; i++) {
+        let card = cards[i];
         sum += Math.min(10, card.point);
     }
     return sum > 21;
@@ -78,6 +78,6 @@ function isBust (cards: string | any[]) {
 let isMobile = function () {
     return cc.sys.isMobile;
 };
-export const Util = { isBust, getMinMaxPoint, isMobile } 
+export  { isBust, getMinMaxPoint, isMobile } 
 
  

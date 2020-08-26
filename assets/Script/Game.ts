@@ -6,7 +6,7 @@ import { Decks } from "./model/Deck";
 //var Types = require('Type');
 import { CardType, Card, ActorPlayingState, Hand, Outcome } from "./model/Type";
 //var ActorPlayingState = Types.ActorPlayingState;
-var Fsm = require("game-fsm");
+import { Fsm } from "./model/game-fsm";
 
 @ccclass
 class Game extends cc.Component {
@@ -48,10 +48,10 @@ class Game extends cc.Component {
   })
   numberOfDecks = 1;
 
-  private static instance: Game  ;
+  private static instance: Game;
   // public static instance = new Game();
   public static getInstance = () => Game.instance;
-  
+
   player: any;
   info: any;
   totalChips: any;
@@ -62,8 +62,7 @@ class Game extends cc.Component {
   onLoad() {
     Game.instance = this;
     let game = Game.getInstance();
-    
-    // Game.instance = this;
+
     //this.inGameUI = this.inGameUI.getComponent('InGameUI');
     let inGameUI = this.inGameUI.getComponent("InGameUI");
     console.log("inGameUI");
@@ -73,8 +72,7 @@ class Game extends cc.Component {
 
     let betUI = this.betUI.getComponent("Bet");
     inGameUI.init(this.betDuration);
-    //this.inGameUI.init(this.betDuration);
-    console.log("init");
+
     betUI.init();
     let dealer = this.dealer.getComponent("Dealer");
     dealer.init();
@@ -217,23 +215,32 @@ class Game extends cc.Component {
 
   onEnterDealState() {
     let betUI = this.betUI.getComponent("Bet");
+    let inGameUI = this.inGameUI.getComponent("InGameUI");
+    let de = this.dealer.getComponent("Dealer");
     betUI.resetTossedChips();
-    let inGameUI = this.inGameUI.getComponent("inGameUI");
+    
     inGameUI.resetCountdown();
     this.player.renderer.showStakeChips(this.player.stakeNum);
     this.player.addCard(this.decks.draw());
-    var holdCard = this.decks.draw();
-    let dealer = this.dealer.getComponent("Dealer");
-    dealer.addHoleCard(holdCard);
+
+    let holdCard = this.decks.draw();
+    
+    de.addHoleCard(holdCard);
     this.player.addCard(this.decks.draw());
-    dealer.addCard(this.decks.draw());
+    de.addCard(this.decks.draw());
+
+   
+    // this.dealer.addHoleCard(holdCard);
+    // this.player.addCard(this.decks.draw());
+    // this.dealer.addCard(this.decks.draw());
+    
     //this.audioMng.playCard();
     this.fsm.onDealed();
   }
 
   onPlayersTurnState(enter: any) {
     if (enter) {
-      let inGameUI = this.inGameUI.getComponent("inGameUI");
+      let inGameUI = this.inGameUI.getComponent("InGameUI");
       inGameUI.showGameState();
     }
   }
@@ -255,7 +262,7 @@ class Game extends cc.Component {
     if (enter) {
       let dealer = this.dealer.getComponent("Dealer");
       dealer.revealHoldCard();
-      let inGameUI = this.inGameUI.getComponent("inGameUI");
+      let inGameUI = this.inGameUI.getComponent("InGameUI");
       inGameUI.showResultState();
 
       let outcome = this._getPlayerResult(this.player, this.dealer);
@@ -268,7 +275,7 @@ class Game extends cc.Component {
           this.totalChipsNum += this.player.stakeNum;
           // 奖励筹码
           var winChipsNum = this.player.stakeNum;
-          if ((!this.player.state as any) === ActorPlayingState.Report) {
+          if (!(this.player.state === ActorPlayingState.Report)) {
             if (this.player.hand === Hand.BlackJack) {
               winChipsNum *= 1.5;
             } else {
@@ -349,7 +356,6 @@ class Game extends cc.Component {
 }
 
 export default Game;
-;
 // cc.Class({
 //     extends: cc.Component,
 
