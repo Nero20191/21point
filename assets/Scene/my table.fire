@@ -87,10 +87,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 151
+        "__id__": 152
       },
       {
-        "__id__": 152
+        "__id__": 153
       }
     ],
     "_prefab": null,
@@ -180,7 +180,7 @@
       "array": [
         0,
         0,
-        309.38202102683,
+        314.81107016478995,
         0,
         0,
         0,
@@ -739,7 +739,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 150
+        "__id__": 151
       }
     ],
     "_prefab": null,
@@ -814,7 +814,7 @@
         "__id__": 23
       },
       {
-        "__id__": 149
+        "__id__": 150
       }
     ],
     "_prefab": null,
@@ -1133,7 +1133,7 @@
     },
     "component": "",
     "_componentId": "1291eH5PptDkZiBtTVOsyvk",
-    "handler": "",
+    "handler": "onRestart",
     "customEventData": ""
   },
   {
@@ -5316,10 +5316,10 @@
     },
     "_children": [
       {
-        "__id__": 147
+        "__id__": 148
       },
       {
-        "__id__": 148
+        "__id__": 149
       }
     ],
     "_active": true,
@@ -5399,7 +5399,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 146
+        "__id__": 147
       }
     ],
     "_prefab": null,
@@ -6076,10 +6076,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 144
+        "__id__": 145
       },
       {
-        "__id__": 145
+        "__id__": 146
       }
     ],
     "_prefab": null,
@@ -6301,6 +6301,9 @@
     "_defaultClip": null,
     "_clips": [
       {
+        "__uuid__": "4fe2b0fb-6d6c-4df5-9f19-04fe0bdd6937"
+      },
+      {
         "__uuid__": "2b86cb04-ba77-4e66-a4b1-805efa0a6314"
       }
     ],
@@ -6394,7 +6397,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 143
+        "__id__": 144
       }
     ],
     "_prefab": null,
@@ -6408,19 +6411,19 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 82,
+      "width": 100,
       "height": 37
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 1,
       "y": 0.5
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        37.864,
+        0,
         0,
         0,
         0,
@@ -6457,6 +6460,9 @@
     "_components": [
       {
         "__id__": 142
+      },
+      {
+        "__id__": 143
       }
     ],
     "_prefab": null,
@@ -6470,8 +6476,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 62.54,
-      "height": 50.4
+      "width": 50.03,
+      "height": 25.2
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -6482,8 +6488,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        -52.8675,
+        1.6750000000000007,
         0,
         0,
         0,
@@ -6525,8 +6531,8 @@
     "_useOriginalSize": false,
     "_string": "boom",
     "_N$string": "boom",
-    "_fontSize": 25,
-    "_lineHeight": 40,
+    "_fontSize": 20,
+    "_lineHeight": 20,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -6540,6 +6546,33 @@
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": "38SdbBs7pCzpBkeVJ+QQ1I"
+  },
+  {
+    "__type__": "cc.Widget",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 141
+    },
+    "_enabled": true,
+    "alignMode": 2,
+    "_target": null,
+    "_alignFlags": 45,
+    "_left": 22.117500000000003,
+    "_right": 27.852500000000003,
+    "_top": 4.225000000000001,
+    "_bottom": 7.575000000000001,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
+    "_isAbsLeft": true,
+    "_isAbsRight": true,
+    "_isAbsTop": true,
+    "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
+    "_originalWidth": 62.54,
+    "_originalHeight": 50.4,
+    "_id": "15X0/i8+pHAKVDTEDIPsCg"
   },
   {
     "__type__": "cc.Sprite",
@@ -6560,7 +6593,7 @@
       "__uuid__": "7c3b6b18-f9be-4dec-b2d4-b815a6c80b88"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -6605,7 +6638,7 @@
       "__id__": 142
     },
     "spCardInfo": {
-      "__id__": 143
+      "__id__": 144
     },
     "animFX": {
       "__id__": 135

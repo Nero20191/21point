@@ -62,7 +62,7 @@ Card.prototype.toString = function () {
 };
 
 // 存放 52 张扑克的实例
-var cards = new Array(52);
+let cards = new Array(52);
 
 let cardArray: any[] = Array(52);
 
@@ -76,9 +76,9 @@ Card.fromId = function (id: number) {
 
 // 初始化所有扑克牌
 (function createCards() {
-    for (var s = 1; s <= 4; s++) {
-        for (var p = 1; p <= 13; p++) {
-            var card = new Card(p, s);
+    for (let s = 1; s <= 4; s++) {
+        for (let p = 1; p <= 13; p++) {
+            let card = new Card(p, s);
             cards[card.id] = card;
         }
     }
