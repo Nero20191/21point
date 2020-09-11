@@ -139,13 +139,13 @@ export default class ActorRenderer extends cc.Component {
     }
   }
 
-//   playBlackJackFX() {
-//     this.animFX.getComponent("FXPlayer").playFX("blackjack");
-//   }
+  playBlackJackFX() {
+    this.animFX.getComponent("FXPlayer").playFX("blackjack");
+  }
 
-//   playBustFX() {
-//     this.animFX.getComponent("FXPlayer").playFX("baopai");
-//   }
+  playBustFX() {
+    this.animFX.getComponent("FXPlayer").playFX("baopai");
+  }
 
   onDeal(card: any, show: any) {
     let newCard = cc.instantiate(this.cardPrefab).getComponent("Card");
@@ -267,9 +267,9 @@ export default class ActorRenderer extends cc.Component {
           "AssetMng"
         ).texBust;
         this.cardInfo.active = true;
-        
-        this.animFX.getComponent("FXPlayer").show(true);
-        this.animFX.getComponent("FXPlayer").playFX("baopai");
+        let animFX = this.animFX.getComponent("FXPlayer");
+        animFX.show(true);
+        animFX.playFX("baopai");
         this.resetCountdown();
         break;
       case ActorPlayingState.Stand:

@@ -9,13 +9,17 @@ export default class Menu extends cc.Component {
     onLoad() {
         let audioMng = this.audioMng.getComponent('AudioMng');
         //audioMng.playMusic();
-        cc.director.preloadScene('table', function () {
+        cc.director.preloadScene('my table', function () {
             cc.log('Next scene preloaded');
         });
     }
 
     playGame() {
+<<<<<<< HEAD
         cc.director.loadScene('table1');
+=======
+        cc.director.loadScene('my table');
+>>>>>>> parent of 938a8ba... 前端
     }
 
     // called every frame

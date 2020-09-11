@@ -21,10 +21,10 @@ function Decks (numberOfDecks:number) {
  */
 Decks.prototype.reset = function () {
     this._cardIds.length = this._numberOfDecks * 52;
-    let index = 0;
-    let fromId = Card.fromId;
-    for (let i = 0; i < this._numberOfDecks; ++i) {
-        for (let cardId = 0; cardId < 52; ++cardId) {
+    var index = 0;
+    var fromId = Card.fromId;
+    for (var i = 0; i < this._numberOfDecks; ++i) {
+        for (var cardId = 0; cardId < 52; ++cardId) {
             this._cardIds[index] = fromId(cardId);
             ++index;
         }
@@ -37,18 +37,18 @@ Decks.prototype.reset = function () {
  * @return {Card}
  */
 Decks.prototype.draw = function () {
-    let cardIds = this._cardIds;
-    let len = cardIds.length;
+    var cardIds = this._cardIds;
+    var len = cardIds.length;
     if (len === 0) {
         return null;
     }
 
-    let random = Math.random();
-    let index = (random * len) | 0;
-    let result = cardIds[index];
+    var random = Math.random();
+    var index = (random * len) | 0;
+    var result = cardIds[index];
 
     // 保持数组紧凑
-    let last = cardIds[len - 1];
+    var last = cardIds[len - 1];
     cardIds[index] = last;
     cardIds.length = len - 1;
 
