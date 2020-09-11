@@ -17,7 +17,11 @@ export default class Menu extends cc.Component {
     playGame() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         cc.director.loadScene('table1');
+=======
+        cc.director.loadScene('my table');
+>>>>>>> parent of 938a8ba... 前端
 =======
         cc.director.loadScene('my table');
 >>>>>>> parent of 938a8ba... 前端
