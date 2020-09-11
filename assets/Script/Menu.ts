@@ -15,7 +15,7 @@ export default class Menu extends cc.Component {
     }
 
     playGame() {
-        cc.director.loadScene('table');
+        cc.director.loadScene('table1');
     }
 
     // called every frame

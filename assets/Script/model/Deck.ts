@@ -1,14 +1,3 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
-// const {ccclass, property} = cc._decorator;
-
-
-
 
 import {Card} from "./Type";
 /**
@@ -66,36 +55,5 @@ Decks.prototype.draw = function () {
     return result;
 };
 
-///**
-// * 发一张牌
-// * @method deal
-// * @return {Card}
-// */
-//Decks.prototype.deal = function () {
-//    this._cardIds.pop();
-//};
-
-///**
-// * 洗牌
-// * @method shuffle
-// */
-//Decks.prototype.shuffle = function () {
-//    shuffleArray(this._cardIds);
-//};
-//
-///**
-// * Randomize array element order in-place.
-// * Using Durstenfeld shuffle algorithm.
-// * http://stackoverflow.com/a/12646864
-// */
-//function shuffleArray(array) {
-//    for (var i = array.length - 1; i > 0; i--) {
-//        var j = (Math.random() * (i + 1)) | 0;
-//        var temp = array[i];
-//        array[i] = array[j];
-//        array[j] = temp;
-//    }
-//    return array;
-//}
 export{Decks}
-// module.exports = Decks;
+

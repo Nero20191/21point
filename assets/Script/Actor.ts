@@ -91,6 +91,11 @@ export default class Actor extends cc.Component {
     this.getComponent("ActorRenderer").onDeal(card, false);
   }
 
+  addHoleCard_others(card: any) {
+    this.holeCard = card;
+    this.getComponent("ActorRenderer").onDeal_others(card, false);
+  }
+
   stand() {
     this.state = ActorPlayingState.Stand;
   }

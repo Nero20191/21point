@@ -1,6 +1,6 @@
 
 const {ccclass, property} = cc._decorator;
-//var Actor = require('Actor');
+
 import Actor from "./Actor";
 @ccclass
 export default class Player extends Actor  {

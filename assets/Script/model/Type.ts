@@ -104,13 +104,7 @@ enum Hand {
     BlackJack ,  // 黑杰克
     FiveCard ,
 }
-// module.exports = {
-//     Suit: CardType,
-//     Card: Card,
-//     ActorPlayingState: ActorPlayingState,
-//     Hand: Hand,
-//     Outcome: Outcome,
-// };
+
 export {
     CardType,
     Card,

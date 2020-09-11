@@ -1,11 +1,8 @@
 const { ccclass, property } = cc._decorator;
-//var players = require('PlayerData').players;
-import { players } from "./UI/PlayerData";
-//var Decks = require('Deck');
+
+import { players } from "./model/PlayerData";
 import { Decks } from "./model/Deck";
-//var Types = require('Type');
 import { CardType, Card, ActorPlayingState, Hand, Outcome } from "./model/Type";
-//var ActorPlayingState = Types.ActorPlayingState;
 import { Fsm } from "./model/game-fsm";
 
 @ccclass
@@ -57,9 +54,14 @@ class Game extends cc.Component {
   totalChips: any;
   decks: any;
   fsm: any;
+  player2: any;
 
   // use this for initialization
   onLoad() {
+    
+    
+
+    
     Game.instance = this;
     let game = Game.getInstance();
 
@@ -79,6 +81,7 @@ class Game extends cc.Component {
 
     //
     this.player = null;
+    this.player2 = null;
     this.createPlayers();
 
     // shortcut to ui element
@@ -100,7 +103,7 @@ class Game extends cc.Component {
     if (this.totalChipsNum < delta) {
       console.log("not enough chips!");
       this.info.enabled = true;
-      this.info.string = "金币不足!";
+      this.info.string = "Not enough chips!";
       return false;
     } else {
       this.totalChipsNum -= delta;
@@ -108,7 +111,7 @@ class Game extends cc.Component {
       this.player.addStake(delta);
       //this.audioMng.playChips();
       this.info.enabled = false;
-      this.info.string = "请下注";
+      this.info.string = "Please place a bet!";
       return true;
     }
   }
@@ -125,29 +128,51 @@ class Game extends cc.Component {
   }
 
   createPlayers() {
-    for (var i = 0; i < 3; ++i) {
-      var playerNode = cc.instantiate(this.playerPrefab);
-      var anchor = this.playerAnchors[i];
-      var switchSide = i > 2;
-      anchor.addChild(playerNode);
-      playerNode.position = cc.v3(0, 0);
-      let player_s: any[] = players;
-      var playerInfoPos = cc.find("anchorPlayerInfo", anchor).getPosition();
-      var stakePos = cc.find("anchorStake", anchor).getPosition();
-      var actorRenderer = playerNode.getComponent("ActorRenderer");
-      actorRenderer.init(
-        player_s[i],
-        playerInfoPos,
-        stakePos,
-        this.turnDuration,
-        switchSide,
-        this
-      );
-      if (i === 2) {
-        this.player = playerNode.getComponent("Player");
+    let i = 0;
+    let playerNode = cc.instantiate(this.playerPrefab);
+    let anchor = this.playerAnchors[i];
+    let switchSide = i > 2;
+    anchor.addChild(playerNode);
+    playerNode.position = cc.v3(500, -240);
+    let player_s: any[] = players;
+    var playerInfoPos = cc.find("anchorPlayerInfo", anchor).getPosition();
+    var stakePos = cc.find("anchorStake", anchor).getPosition();
+    var actorRenderer = playerNode.getComponent("ActorRenderer");
+    actorRenderer.init(
+      player_s[i],
+      playerInfoPos,
+      stakePos,
+      this.turnDuration,
+      switchSide,
+      this
+    );
+    this.player = playerNode.getComponent("Player");
         this.player.init();
-      }
-    }
+    // for (let i = 0; i < 3; ++i) {
+    //   let playerNode = cc.instantiate(this.playerPrefab);
+    //   let anchor = this.playerAnchors[i];
+    //   let switchSide = i > 2;
+    //   anchor.addChild(playerNode);
+    //   playerNode.position = cc.v3(0, 0);
+    //   let player_s: any[] = players;
+    //   var playerInfoPos = cc.find("anchorPlayerInfo", anchor).getPosition();
+    //   var stakePos = cc.find("anchorStake", anchor).getPosition();
+    //   var actorRenderer = playerNode.getComponent("ActorRenderer");
+    //   actorRenderer.init(
+    //     player_s[i],
+    //     playerInfoPos,
+    //     stakePos,
+    //     this.turnDuration,
+    //     switchSide,
+    //     this
+    //   );
+    //   if (i === 0) {
+    //     this.player = playerNode.getComponent("Player");
+    //     this.player.init();
+    //     // this.player2 = playerNode.getComponent("Player");
+    //     // this.player2.init();
+    //   }
+    // }
   }
 
   // UI EVENT CALLBACKS
@@ -216,7 +241,7 @@ class Game extends cc.Component {
   onEnterDealState() {
     let betUI = this.betUI.getComponent("Bet");
     let inGameUI = this.inGameUI.getComponent("InGameUI");
-    let de = this.dealer.getComponent("Dealer");
+    let _dealer = this.dealer.getComponent("Dealer");
     betUI.resetTossedChips();
     
     inGameUI.resetCountdown();
@@ -225,16 +250,16 @@ class Game extends cc.Component {
 
     let holdCard = this.decks.draw();
     
-    de.addHoleCard(holdCard);
+    _dealer.addHoleCard(holdCard);
     this.player.addCard(this.decks.draw());
-    de.addCard(this.decks.draw());
+    _dealer.addCard(this.decks.draw());
 
-   
-    // this.dealer.addHoleCard(holdCard);
-    // this.player.addCard(this.decks.draw());
-    // this.dealer.addCard(this.decks.draw());
-    
-    //this.audioMng.playCard();
+    // this.player2.addHoleCard_others(holdCard);
+    // this.player2.addHoleCard_others(holdCard);
+
+
+    // let audio = this.audioMng.getComponent("audioMng");
+    // audio.playCard();
     this.fsm.onDealed();
   }
 

@@ -36,6 +36,3 @@ const players = [
 	}
 ];
 export{players}
-// module.exports = {
-// 	players: players
-// };

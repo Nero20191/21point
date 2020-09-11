@@ -164,6 +164,24 @@ export default class ActorRenderer extends cc.Component {
     newCard.node.runAction(cc.sequence(moveAction, callback));
   }
 
+  //其他玩家扑克位置
+  onDeal_others(card: any, show: any) {
+    let newCard = cc.instantiate(this.cardPrefab).getComponent("Card");
+    this.anchorCards.addChild(newCard.node);
+    newCard.init(card);
+    newCard.reveal(show);
+
+    var startPos = cc.v2(-30, 30);
+    var index = this.actor.cards.length - 1;
+    var endPos = cc.v2(this.cardSpace * index, 0);
+    newCard.node.setPosition(startPos);
+    this._updatePointPos(endPos.x);
+
+    var moveAction = cc.moveTo(0.5, endPos);
+    var callback = cc.callFunc(this._onDealEnd, this);
+    newCard.node.runAction(cc.sequence(moveAction, callback));
+  }
+  
   _onDealEnd(target: any) {
     this.resetCountdown();
     if (this.actor.state === ActorPlayingState.Normal) {
