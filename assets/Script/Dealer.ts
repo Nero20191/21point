@@ -1,5 +1,5 @@
 const { ccclass, property } = cc._decorator;
-//let Actor  = require('./Actor');
+
 import Actor from "./Actor";
 //import * as Util from "./model/Util";
 import { isBust, getMinMaxPoint, isMobile } from "./model/Util";
